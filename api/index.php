@@ -4,13 +4,6 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
-$dbPath = '/tmp/portfolio.sqlite';
-$bundledDb = __DIR__.'/../database/portfolio.sqlite';
-
-if (!file_exists($dbPath) && file_exists($bundledDb)) {
-    copy($bundledDb, $dbPath);
-}
-
 $dirs = [
     '/tmp/storage',
     '/tmp/storage/framework',
@@ -37,8 +30,12 @@ $_ENV['APP_DEBUG'] = 'false';
 $_ENV['APP_ENV'] = 'production';
 $_ENV['ASSET_URL'] = 'https://web-portfolio-delta-kohl.vercel.app';
 
-$_ENV['DB_CONNECTION'] = 'sqlite';
-$_ENV['DB_DATABASE'] = $dbPath;
+$_ENV['DB_CONNECTION'] = 'mysql';
+$_ENV['DB_HOST'] = 'epzki4.h.filess.io';
+$_ENV['DB_PORT'] = '3306';
+$_ENV['DB_DATABASE'] = 'web_portfolio_tallchose';
+$_ENV['DB_USERNAME'] = 'web_portfolio_tallchose';
+$_ENV['DB_PASSWORD'] = '834a5b6fe7edc8823a513cd123484f66cfeaff5f';
 
 $_ENV['SESSION_DRIVER'] = 'cookie';
 $_ENV['SESSION_LIFETIME'] = '120';
