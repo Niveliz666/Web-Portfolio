@@ -4,15 +4,32 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
-// Determine if the application is in maintenance mode...
-if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
-    require $maintenance;
+$dbPath = '/tmp/portfolio.sqlite';
+$bundledDb = __DIR__.'/../database/portfolio.sqlite';
+
+if (!file_exists($dbPath) && file_exists($bundledDb)) {
+    copy($bundledDb, $dbPath);
 }
 
-// Register the Composer autoloader...
+$dirs = [
+    '/tmp/storage',
+    '/tmp/storage/framework',
+    '/tmp/storage/framework/cache',
+    '/tmp/storage/framework/cache/data',
+    '/tmp/storage/framework/sessions',
+    '/tmp/storage/framework/views',
+    '/tmp/storage/logs',
+];
+foreach ($dirs as $dir) {
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+}
+
+define('LARAVEL_MAINTENANCE_DRIVER', 'file');
+
 require __DIR__.'/../vendor/autoload.php';
 
-// Bootstrap Laravel and handle the request...
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $app->handleRequest(Request::capture());
