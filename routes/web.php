@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\SkillController;
@@ -19,12 +20,15 @@ Route::prefix('portfolio')->group(function () {
     Route::post('/contact', [PortfolioController::class, 'sendContact'])->name('portfolio.sendContact');
 });
 
-// Admin Login (public)
+// Admin Login (public, no CSRF because sessions broken on Vercel)
 Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin/login', [AuthController::class, 'login']);
+Route::post('/admin/login', [AuthController::class, 'login'])
+    ->withoutMiddleware(VerifyCsrfToken::class);
 
-// Admin Panel (protected)
-Route::prefix('admin')->name('admin.')->middleware(AdminAuth::class)->group(function () {
+// Admin Panel (protected, no CSRF because sessions broken on Vercel)
+Route::prefix('admin')->name('admin.')->middleware(AdminAuth::class)
+    ->withoutMiddleware(VerifyCsrfToken::class)
+    ->group(function () {
     Route::get('/', fn() => redirect()->route('admin.projects.index'));
     
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
