@@ -28,6 +28,12 @@ foreach ($dirs as $dir) {
 
 define('LARAVEL_MAINTENANCE_DRIVER', 'file');
 
+if (empty($_ENV['APP_URL']) && empty($_SERVER['APP_URL'])) {
+    $_ENV['APP_URL'] = 'https://web-portfolio-delta-kohl.vercel.app';
+    $_SERVER['APP_URL'] = 'https://web-portfolio-delta-kohl.vercel.app';
+}
+$_ENV['ASSET_URL'] = 'https://web-portfolio-delta-kohl.vercel.app';
+
 require __DIR__.'/../vendor/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
