@@ -32,7 +32,13 @@ if (empty($_ENV['APP_URL']) && empty($_SERVER['APP_URL'])) {
     $_ENV['APP_URL'] = 'https://web-portfolio-delta-kohl.vercel.app';
     $_SERVER['APP_URL'] = 'https://web-portfolio-delta-kohl.vercel.app';
 }
+$_ENV['APP_KEY'] = $_ENV['APP_KEY'] ?? 'base64:lPPEX7l8hkhpySAUl0A6arzzlB07JO8zng9uFN658Sw=';
+$_ENV['APP_DEBUG'] = 'false';
+$_ENV['APP_ENV'] = 'production';
 $_ENV['ASSET_URL'] = 'https://web-portfolio-delta-kohl.vercel.app';
+
+$_ENV['DB_CONNECTION'] = 'sqlite';
+$_ENV['DB_DATABASE'] = $dbPath;
 
 $_ENV['SESSION_DRIVER'] = 'cookie';
 $_ENV['SESSION_LIFETIME'] = '120';
