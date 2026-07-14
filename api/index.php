@@ -34,6 +34,11 @@ if (empty($_ENV['APP_URL']) && empty($_SERVER['APP_URL'])) {
 }
 $_ENV['ASSET_URL'] = 'https://web-portfolio-delta-kohl.vercel.app';
 
+$_ENV['SESSION_DRIVER'] = 'cookie';
+$_ENV['SESSION_LIFETIME'] = '120';
+$_ENV['SESSION_SECURE_COOKIE'] = 'true';
+$_ENV['SESSION_SAME_SITE'] = 'lax';
+
 require __DIR__.'/../vendor/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
