@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    private $adminEmail = 'admin@example.com';
-    private $adminPassword = 'admin123';
+    private string $adminEmail = 'admin@example.com';
+    private string $adminPassword = 'admin123';
+    private string $cookieName = 'admin_token';
+    private string $secret = 'portfolio-admin-k3y-2026!';
 
     public function showLoginForm()
     {
-        if (Cookie::get('admin_auth')) {
+        if ($this->isLoggedIn()) {
             return redirect()->route('admin.projects.index');
         }
         return view('portfolio.admin.auth.login');
@@ -23,33 +23,44 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+            'email'    => 'required|email',
+            'password' => 'required',
         ]);
 
         if ($request->email === $this->adminEmail && $request->password === $this->adminPassword) {
-            $payload = json_encode([
-                'email' => $this->adminEmail,
-                'name' => 'Admin',
-                'time' => now()->timestamp,
+            $token = hash_hmac('sha256', $request->email . time(), $this->secret);
+
+            setcookie($this->cookieName, $token, [
+                'expires'  => time() + (120 * 60),
+                'path'     => '/',
+                'secure'   => true,
+                'httponly'  => true,
+                'samesite' => 'Lax',
             ]);
 
-            $response = redirect()->intended(route('admin.projects.index'));
-            $response->cookie('admin_auth', $payload, 120 * 60);
-
-            return $response;
+            return redirect()->route('admin.projects.index');
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Email atau password salah.',
         ])->withInput($request->only('email'));
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        $response = redirect()->route('admin.login');
-        $response->cookie(Cookie::forget('admin_auth'));
+        setcookie($this->cookieName, '', [
+            'expires'  => time() - 3600,
+            'path'     => '/',
+            'secure'   => true,
+            'httponly'  => true,
+            'samesite' => 'Lax',
+        ]);
 
-        return $response;
+        return redirect()->route('admin.login');
+    }
+
+    private function isLoggedIn(): bool
+    {
+        return isset($_COOKIE[$this->cookieName]) && !empty($_COOKIE[$this->cookieName]);
     }
 }
