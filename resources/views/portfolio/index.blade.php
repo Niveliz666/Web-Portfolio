@@ -146,7 +146,7 @@
             <article class="project-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                 <div class="project-image">
                     @if($project->image)
-                    <img src="{{ asset('storage/'.$project->image) }}" alt="{{ $project->title }}" loading="lazy">
+                    <img src="{{ str_starts_with($project->image, 'http') ? $project->image : asset('storage/'.$project->image) }}" alt="{{ $project->title }}" loading="lazy">
                     @else
                     <div class="project-placeholder">{{ strtoupper(substr($project->title, 0, 1)) }}</div>
                     @endif
@@ -217,9 +217,9 @@
                 </div>
             </div>
             <div class="contact-form" data-aos="fade-left" data-aos-duration="1000">
-                @if(session('success'))
+                @if(request()->query('sent'))
                 <div style="background: #10b98120; border: 1px solid #10b981; color: #10b981; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 14px;">
-                    {{ session('success') }}
+                    Message sent! I will get back to you soon.
                 </div>
                 @endif
                 @if($errors->any())

@@ -52,8 +52,8 @@
             <h1 class="admin-page-title">@yield('page-title', 'Dashboard')</h1>
         </header>
         <div class="admin-content">
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
+            @if(request()->query('success'))
+                <div class="alert alert-success">{{ request()->query('success') }}</div>
             @endif
             @if($errors->any())
                 <div class="alert alert-error">

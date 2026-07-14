@@ -29,7 +29,7 @@ class SkillController extends Controller
             'sort_order' => 'nullable|integer',
         ]);
         Skill::create($validated);
-        return redirect()->route('admin.skills.index')->with('success', 'Skill added!');
+        return redirect()->route('admin.skills.index') . '?success=Skill+added!';
     }
 
     public function edit(Skill $skill)
@@ -47,12 +47,12 @@ class SkillController extends Controller
             'sort_order' => 'nullable|integer',
         ]);
         $skill->update($validated);
-        return redirect()->route('admin.skills.index')->with('success', 'Skill updated!');
+        return redirect()->route('admin.skills.index') . '?success=Skill+updated!';
     }
 
     public function destroy(Skill $skill)
     {
         $skill->delete();
-        return back()->with('success', 'Skill deleted.');
+        return redirect()->route('admin.skills.index') . '?success=Skill+deleted.';
     }
 }

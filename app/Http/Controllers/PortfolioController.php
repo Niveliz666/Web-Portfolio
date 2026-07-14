@@ -29,6 +29,6 @@ class PortfolioController extends Controller
 
         Contact::create($validated);
 
-        return back()->with('success', 'Message sent! I will get back to you soon.');
+        return redirect(url()->current() . '?sent=1');
     }
 }

@@ -22,10 +22,14 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'email'    => 'required|email',
             'password' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return view('portfolio.admin.auth.login')->withErrors($validator)->withInput($request->only('email'));
+        }
 
         if ($request->email === $this->adminEmail && $request->password === $this->adminPassword) {
             $token = hash_hmac('sha256', $request->email . time(), $this->secret);
@@ -41,7 +45,7 @@ class AuthController extends Controller
             return redirect()->route('admin.projects.index');
         }
 
-        return back()->withErrors([
+        return view('portfolio.admin.auth.login')->withErrors([
             'email' => 'Email atau password salah.',
         ])->withInput($request->only('email'));
     }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -26,7 +25,7 @@ class ProjectController extends Controller
             'title'            => 'required|string|max:255',
             'description'      => 'required|string',
             'long_description' => 'nullable|string',
-            'image'            => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image'            => 'nullable|url|max:500',
             'live_url'         => 'nullable|url',
             'category'         => 'required|string',
             'technologies'     => 'nullable|string',
@@ -34,16 +33,12 @@ class ProjectController extends Controller
             'sort_order'       => 'nullable|integer',
         ]);
 
-        if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('projects', 'public');
-        }
-
         $validated['technologies'] = $request->technologies
             ? array_map('trim', explode(',', $request->technologies)) : [];
         $validated['featured'] = $request->has('featured');
 
         Project::create($validated);
-        return redirect()->route('admin.projects.index')->with('success', 'Project created!');
+        return redirect()->route('admin.projects.index') . '?success=Project+created!';
     }
 
     public function edit(Project $project)
@@ -57,7 +52,7 @@ class ProjectController extends Controller
             'title'            => 'required|string|max:255',
             'description'      => 'required|string',
             'long_description' => 'nullable|string',
-            'image'            => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image'            => 'nullable|url|max:500',
             'live_url'         => 'nullable|url',
             'category'         => 'required|string',
             'technologies'     => 'nullable|string',
@@ -65,23 +60,17 @@ class ProjectController extends Controller
             'sort_order'       => 'nullable|integer',
         ]);
 
-        if ($request->hasFile('image')) {
-            if ($project->image) Storage::disk('public')->delete($project->image);
-            $validated['image'] = $request->file('image')->store('projects', 'public');
-        }
-
         $validated['technologies'] = $request->technologies
             ? array_map('trim', explode(',', $request->technologies)) : [];
         $validated['featured'] = $request->has('featured');
 
         $project->update($validated);
-        return redirect()->route('admin.projects.index')->with('success', 'Project updated!');
+        return redirect()->route('admin.projects.index') . '?success=Project+updated!';
     }
 
     public function destroy(Project $project)
     {
-        if ($project->image) Storage::disk('public')->delete($project->image);
         $project->delete();
-        return back()->with('success', 'Project deleted.');
+        return redirect()->route('admin.projects.index') . '?success=Project+deleted.';
     }
 }

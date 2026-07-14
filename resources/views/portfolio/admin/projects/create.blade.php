@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="admin-card">
-    <form method="POST" action="{{ route('admin.projects.store') }}" enctype="multipart/form-data" class="admin-form">
+    <form method="POST" action="{{ route('admin.projects.store') }}" class="admin-form">
         @csrf
         <div class="form-grid">
             <div class="form-group">
@@ -48,8 +48,8 @@
                 <textarea name="long_description" rows="5">{{ old('long_description') }}</textarea>
             </div>
             <div class="form-group">
-                <label>Image</label>
-                <input type="file" name="image" accept="image/*">
+                <label>Image URL</label>
+                <input type="url" name="image" value="{{ old('image') }}" placeholder="https://example.com/image.jpg">
             </div>
             <div class="form-group">
                 <label>Technologies (comma separated)</label>

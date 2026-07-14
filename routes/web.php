@@ -17,7 +17,9 @@ Route::get('/', function () {
 // Portfolio Frontend
 Route::prefix('portfolio')->group(function () {
     Route::get('/', [PortfolioController::class, 'index'])->name('portfolio.index');
-    Route::post('/contact', [PortfolioController::class, 'sendContact'])->name('portfolio.sendContact');
+    Route::post('/contact', [PortfolioController::class, 'sendContact'])
+        ->withoutMiddleware(VerifyCsrfToken::class)
+        ->name('portfolio.sendContact');
 });
 
 // Admin Login (public, no CSRF because sessions broken on Vercel)

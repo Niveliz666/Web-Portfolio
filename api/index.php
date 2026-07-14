@@ -21,13 +21,11 @@ foreach ($dirs as $dir) {
 
 define('LARAVEL_MAINTENANCE_DRIVER', 'file');
 
-if (empty($_ENV['APP_URL']) && empty($_SERVER['APP_URL'])) {
-    $_ENV['APP_URL'] = 'https://web-portfolio-delta-kohl.vercel.app';
-    $_SERVER['APP_URL'] = 'https://web-portfolio-delta-kohl.vercel.app';
-}
+$_ENV['APP_NAME'] = 'Portfolio';
 $_ENV['APP_KEY'] = $_ENV['APP_KEY'] ?? 'base64:lPPEX7l8hkhpySAUl0A6arzzlB07JO8zng9uFN658Sw=';
 $_ENV['APP_DEBUG'] = 'false';
 $_ENV['APP_ENV'] = 'production';
+$_ENV['APP_URL'] = 'https://web-portfolio-delta-kohl.vercel.app';
 $_ENV['ASSET_URL'] = 'https://web-portfolio-delta-kohl.vercel.app';
 
 $_ENV['DB_CONNECTION'] = 'mysql';
@@ -37,7 +35,8 @@ $_ENV['DB_DATABASE'] = 'web_portfolio_tallchose';
 $_ENV['DB_USERNAME'] = 'web_portfolio_tallchose';
 $_ENV['DB_PASSWORD'] = '834a5b6fe7edc8823a513cd123484f66cfeaff5f';
 
-$_ENV['SESSION_DRIVER'] = 'database';
+$_ENV['CACHE_STORE'] = 'array';
+$_ENV['SESSION_DRIVER'] = 'array';
 $_ENV['SESSION_LIFETIME'] = '120';
 $_ENV['SESSION_SECURE_COOKIE'] = 'true';
 $_ENV['SESSION_SAME_SITE'] = 'lax';

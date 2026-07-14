@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="admin-card">
-    <form action="{{ route('admin.projects.update', $project) }}" method="POST" enctype="multipart/form-data" class="admin-form">
+    <form action="{{ route('admin.projects.update', $project) }}" method="POST" class="admin-form">
         @csrf
         @method('PUT')
         <div class="form-grid">
@@ -46,14 +46,14 @@
                 <textarea name="long_description" rows="5">{{ old('long_description', $project->long_description) }}</textarea>
             </div>
             <div class="form-group">
-                <label>Image</label>
+                <label>Image URL</label>
                 @if($project->image)
                 <div class="current-image">
-                    <img src="{{ asset('storage/'.$project->image) }}" alt="">
+                    <img src="{{ str_starts_with($project->image, 'http') ? $project->image : asset('storage/'.$project->image) }}" alt="" style="max-width:200px;border-radius:8px;margin-bottom:8px;">
                     <span>Current image</span>
                 </div>
                 @endif
-                <input type="file" name="image" accept="image/*">
+                <input type="url" name="image" value="{{ old('image', $project->image) }}" placeholder="https://example.com/image.jpg">
             </div>
             <div class="form-group">
                 <label>Technologies (comma separated)</label>

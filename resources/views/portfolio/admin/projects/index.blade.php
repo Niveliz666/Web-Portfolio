@@ -26,7 +26,7 @@
                         <div class="table-project">
                             <div class="table-thumb">
                                 @if($project->image)
-                                <img src="{{ asset('storage/'.$project->image) }}" alt="">
+                                <img src="{{ str_starts_with($project->image, 'http') ? $project->image : asset('storage/'.$project->image) }}" alt="">
                                 @else
                                 {{ strtoupper(substr($project->title, 0, 2)) }}
                                 @endif
