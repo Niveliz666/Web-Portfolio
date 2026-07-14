@@ -13,7 +13,9 @@ class PortfolioController extends Controller
     {
         $projects = Project::orderBy('sort_order', 'asc')->orderBy('created_at', 'desc')->get();
         $skills = Skill::orderBy('sort_order', 'asc')->get()->groupBy('category');
-        return view('portfolio.index', compact('projects', 'skills'));
+        $projectCount = Project::count();
+        $clientCount = Contact::distinct('email')->count();
+        return view('portfolio.index', compact('projects', 'skills', 'projectCount', 'clientCount'));
     }
 
     public function sendContact(Request $request)

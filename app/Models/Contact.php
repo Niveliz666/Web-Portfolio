@@ -18,6 +18,6 @@ use Illuminate\Database\Eloquent\Model;
 class Contact extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'email', 'message', 'is_read'];
+    protected $fillable = ['name', 'email', 'subject', 'message', 'is_read'];
     protected $casts = ['is_read' => 'boolean'];
 }

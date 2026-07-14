@@ -27,11 +27,11 @@
                     <span class="hero-stat-label">Years Experience</span>
                 </div>
                 <div class="hero-stat" data-aos="fade-up" data-aos-delay="700">
-                    <span class="hero-stat-number">1</span>
+                    <span class="hero-stat-number">{{ $projectCount }}</span>
                     <span class="hero-stat-label">Projects Completed</span>
                 </div>
                 <div class="hero-stat" data-aos="fade-up" data-aos-delay="800">
-                    <span class="hero-stat-number">7+</span>
+                    <span class="hero-stat-number">{{ $clientCount }}+</span>
                     <span class="hero-stat-label">Happy Clients</span>
                 </div>
             </div>
@@ -191,7 +191,7 @@
                     to reach out and let's create something amazing together.
                 </p>
                 <div class="contact-links">
-                    <a href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=GTvVlcSMVxklSGWhKZpFWQPdLQrtXHFhXRbvWTNXNGSqSQtNbLrrSwKXbdTZKnzBjrpNpgPhjnpsz" target="_blank" rel="noopener noreferrer" class="contact-link" data-aos="fade-up" data-aos-delay="100">
+                    <a href="mailto:lrx8422@gmail.com" class="contact-link" data-aos="fade-up" data-aos-delay="100">
                         <div class="contact-link-icon">✉</div>
                         <div class="contact-link-text">
                             <span class="contact-link-label">Email</span>
@@ -217,6 +217,18 @@
                 </div>
             </div>
             <div class="contact-form" data-aos="fade-left" data-aos-duration="1000">
+                @if(session('success'))
+                <div style="background: #10b98120; border: 1px solid #10b981; color: #10b981; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 14px;">
+                    {{ session('success') }}
+                </div>
+                @endif
+                @if($errors->any())
+                <div style="background: #ef444420; border: 1px solid #ef4444; color: #ef4444; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 14px;">
+                    @foreach($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
+                @endif
                 <form action="{{ route('portfolio.sendContact') }}" method="POST" class="contact-form">
                     @csrf
                     <div class="form-row">
