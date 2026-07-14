@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Hardcoded admin credentials
     private $adminEmail = 'admin@example.com';
     private $adminPassword = 'admin123';
 
     public function showLoginForm()
     {
-        if (session()->get('admin_logged_in')) {
+        if (Cookie::get('admin_auth')) {
             return redirect()->route('admin.projects.index');
         }
         return view('portfolio.admin.auth.login');
@@ -26,14 +27,17 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        // Check credentials (no database needed)
         if ($request->email === $this->adminEmail && $request->password === $this->adminPassword) {
-            $request->session()->put('admin_logged_in', true);
-            $request->session()->put('admin_user', [
+            $payload = json_encode([
+                'email' => $this->adminEmail,
                 'name' => 'Admin',
-                'email' => $this->adminEmail
+                'time' => now()->timestamp,
             ]);
-            return redirect()->intended(route('admin.projects.index'));
+
+            $response = redirect()->intended(route('admin.projects.index'));
+            $response->cookie('admin_auth', $payload, 120 * 60);
+
+            return $response;
         }
 
         return back()->withErrors([
@@ -43,8 +47,9 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->session()->forget('admin_logged_in');
-        $request->session()->forget('admin_user');
-        return redirect()->route('admin.login');
+        $response = redirect()->route('admin.login');
+        $response->cookie(Cookie::forget('admin_auth'));
+
+        return $response;
     }
 }
