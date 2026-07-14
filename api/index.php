@@ -37,7 +37,7 @@ $_ENV['DB_DATABASE'] = 'web_portfolio_tallchose';
 $_ENV['DB_USERNAME'] = 'web_portfolio_tallchose';
 $_ENV['DB_PASSWORD'] = '834a5b6fe7edc8823a513cd123484f66cfeaff5f';
 
-$_ENV['SESSION_DRIVER'] = 'cookie';
+$_ENV['SESSION_DRIVER'] = 'database';
 $_ENV['SESSION_LIFETIME'] = '120';
 $_ENV['SESSION_SECURE_COOKIE'] = 'true';
 $_ENV['SESSION_SAME_SITE'] = 'lax';
